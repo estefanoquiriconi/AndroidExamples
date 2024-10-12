@@ -16,8 +16,7 @@ import java.util.List;
 
 public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.NotaHolder> {
     private List<Nota> notas = new ArrayList<>();
-    //Ver que esta distinto
-    private OnItemClickListener listener;;
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -48,36 +47,31 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.NotaHolder> {
     public Nota getNotaAt(int position){
         return notas.get(position);
     }
-    class NotaHolder extends RecyclerView.ViewHolder{
-        private TextView textViewTitulo;
-        private TextView textViewDescripcion;
-        private TextView textViewPrioridad;
 
-        //Cuando implemente no me parecia necesario - revisar
+    public class NotaHolder extends RecyclerView.ViewHolder{
+        private final TextView textViewTitulo;
+        private final TextView textViewDescripcion;
+        private final TextView textViewPrioridad;
+
         public NotaHolder(View itemView){
             super(itemView);
             textViewTitulo = itemView.findViewById(R.id.text_view_titulo);
             textViewDescripcion = itemView.findViewById(R.id.text_view_descripcion);
             textViewPrioridad = itemView.findViewById(R.id.text_view_prioridad);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(notas.get(position));
-                    }
+            itemView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(notas.get(position));
                 }
             });
         }
-
     }
 
     public interface OnItemClickListener{
         void onItemClick(Nota nota);
     }
 
-    //Idem arriba
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

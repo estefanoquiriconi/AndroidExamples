@@ -13,53 +13,59 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.example.architectureexample.R;
+import com.example.architectureexample.databinding.ActivityAddNotaBinding;
 
 public class AddEditNotaActivity extends AppCompatActivity {
-    public static final String EXTRA_ID =
-            "com.example.architectureexample.EXTRA_ID";
-    public static final String EXTRA_TITULO =
-            "com.example.architectureexample.EXTRA_TITULO";
-    public static final String EXTRA_DESCRIPCION =
-            "com.example.architectureexample.EXTRA_DESCRIPCION";
-    public static final String EXTRA_PRIORIDAD =
-            "com.example.architectureexample.EXTRA_PRIORIDAD";
-    private EditText editTextTitulo;
-    private EditText editTextDescripcion;
-    private NumberPicker numberPickerPrioridad;
+    public static final String EXTRA_ID = "com.example.architectureexample.EXTRA_ID";
+    public static final String EXTRA_TITULO = "com.example.architectureexample.EXTRA_TITULO";
+    public static final String EXTRA_DESCRIPCION = "com.example.architectureexample.EXTRA_DESCRIPCION";
+    public static final String EXTRA_PRIORIDAD = "com.example.architectureexample.EXTRA_PRIORIDAD";
+
+
+    ActivityAddNotaBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_nota);
+        binding = ActivityAddNotaBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        editTextTitulo = findViewById(R.id.edit_text_titulo);
-        editTextDescripcion = findViewById(R.id.edit_text_descripcion);
-        numberPickerPrioridad = findViewById(R.id.number_picker_prioridad);
+        binding.numberPickerPrioridad.setMinValue(1);
+        binding.numberPickerPrioridad.setMaxValue(10);
 
-        numberPickerPrioridad.setMinValue(1);
-        numberPickerPrioridad.setMaxValue(10);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        }
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_ID)){
+        if (intent.hasExtra(EXTRA_ID)) {
             setTitle("Editar Nota");
-            editTextTitulo.setText(intent.getStringExtra(EXTRA_TITULO));
-            editTextDescripcion.setText(intent.getStringExtra(EXTRA_DESCRIPCION));
-            numberPickerPrioridad.setValue(intent.getIntExtra(EXTRA_PRIORIDAD,1));
+            binding.editTextTitulo.setText(intent.getStringExtra(EXTRA_TITULO));
+            binding.editTextDescripcion.setText(intent.getStringExtra(EXTRA_DESCRIPCION));
+            binding.numberPickerPrioridad.setValue(intent.getIntExtra(EXTRA_PRIORIDAD, 1));
 
         } else {
             setTitle("Agregar Nota");
         }
     }
 
-    private void save_nota(){
-        String titulo = editTextTitulo.getText().toString();
-        String descripcion = editTextDescripcion.getText().toString();
-        int prioridad = numberPickerPrioridad.getValue();
+    private void save_nota() {
+        String titulo = binding.editTextTitulo.getText().toString();
+        String descripcion = binding.editTextDescripcion.getText().toString();
+        int prioridad = binding.numberPickerPrioridad.getValue();
 
-        if (titulo.trim().isEmpty() || descripcion.trim().isEmpty()) {
-            Toast.makeText(this, "Please insert a title and description", Toast.LENGTH_SHORT).show();
+        if (titulo.trim().isEmpty()) {
+            binding.editTextTitulo.requestFocus();
+            binding.editTextTitulo.setError("Por favor ingresa un título.");
+            Toast.makeText(this, "Por favor ingresa un título", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (descripcion.trim().isEmpty()) {
+            binding.editTextDescripcion.requestFocus();
+            binding.editTextDescripcion.setError("Por favor ingresa una descripción.");
+            Toast.makeText(this, "Por favor ingresa una descripción", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -72,7 +78,6 @@ public class AddEditNotaActivity extends AppCompatActivity {
         if (id != -1) {
             data.putExtra(EXTRA_ID, id);
         }
-
         setResult(RESULT_OK, data);
         finish();
     }
@@ -89,7 +94,6 @@ public class AddEditNotaActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.guardar_nota) {
             save_nota();
             return true;
-        }else
-            return super.onOptionsItemSelected(item);
+        } else return super.onOptionsItemSelected(item);
     }
 }
