@@ -44,9 +44,9 @@ public abstract class NotaDatabase extends RoomDatabase {
     private static void populateDatabase(NotaDatabase db) {
         executor.execute(() -> {
             NotaDao notaDao = db.notaDao();
-            notaDao.insert(new Nota("Tile 1", "Description 1", 5));
-            notaDao.insert(new Nota("Tile 2", "Description 2", 2));
-            notaDao.insert(new Nota("Tile 3", "Description 3", 7));
+            notaDao.insert(new Nota("Título 1", "Descripción 1", 5));
+            notaDao.insert(new Nota("Título 2", "Descripción 2", 2));
+            notaDao.insert(new Nota("Título 3", "Descripción 3", 7));
         });
     }
 }

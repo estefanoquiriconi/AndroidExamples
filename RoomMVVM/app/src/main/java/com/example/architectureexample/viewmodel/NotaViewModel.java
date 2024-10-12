@@ -12,13 +12,17 @@ import com.example.architectureexample.model.Nota;
 import java.util.List;
 
 public class NotaViewModel extends AndroidViewModel {
-    private NotaRepository repository;
-    LiveData<List<Nota>> allNotas;
+    private final NotaRepository repository;
+    private final LiveData<List<Nota>> allNotas;
 
     public NotaViewModel(@NonNull Application application) {
         super(application);
         repository = new NotaRepository(application);
         allNotas = repository.getAllNotas();
+    }
+
+    public LiveData<List<Nota>> getAllNotas(){
+        return allNotas;
     }
 
     public void insert(Nota nota){
@@ -28,14 +32,13 @@ public class NotaViewModel extends AndroidViewModel {
     public void update(Nota nota){
         repository.update(nota);
     }
+
     public void delete(Nota nota){
         repository.delete(nota);
     }
+
     public void deleteAllNotas(){
         repository.deleteAllNotas();
     }
 
-    public LiveData<List<Nota>> getAllNotas(){
-        return allNotas;
-    }
 }
