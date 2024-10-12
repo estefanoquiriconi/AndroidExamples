@@ -14,6 +14,7 @@ import java.util.List;
 public class NotaViewModel extends AndroidViewModel {
     private NotaRepository repository;
     LiveData<List<Nota>> allNotas;
+
     public NotaViewModel(@NonNull Application application) {
         super(application);
         repository = new NotaRepository(application);
